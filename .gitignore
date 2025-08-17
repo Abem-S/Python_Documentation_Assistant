@@ -1,0 +1,9 @@
+.env
+retriev_and_gen.py
+
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+*.egg-info/
