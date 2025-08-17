@@ -1,5 +1,5 @@
 import streamlit as st
-from retrieval_and_generation import rag_chain
+from src.retrieval_and_generation import rag_chain
 
 st.set_page_config(
     page_title="Python Docs Assistant",
