@@ -55,6 +55,7 @@ def get_rag_response(query: str):
     Returns:
         A dictionary containing the RAG chain's result and source documents.
     """
-    response = rag_chain.invoke(query)
+    # This is the fix: wrap the query in a dictionary
+    response = rag_chain.invoke({"query": query})
     return response
 
