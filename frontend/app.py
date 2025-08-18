@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 
 # Load environment variables (for the frontend, this would be for the backend URL)
 load_dotenv()
-BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
+BACKEND_URL = os.getenv("BACKEND_URL", "https://python-documentation-assistant.onrender.com/")
 
 # CONFIG
 st.set_page_config(
