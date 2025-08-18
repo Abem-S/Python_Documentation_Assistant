@@ -44,4 +44,3 @@ def rag_query(request: QueryRequest):
     except Exception as e:
         # If anything goes wrong, raise an HTTP error with a descriptive message.
         raise HTTPException(status_code=500, detail=str(e))
-
