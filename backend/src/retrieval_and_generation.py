@@ -1,4 +1,3 @@
-
 import os
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
@@ -6,13 +5,14 @@ from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-# Load environment variables
+# Load environment variables from the .env file in the backend directory
 load_dotenv()
 
-# Define the constants
-# This is the key fix: use a direct, project-relative path.
-# The `chroma_db` folder is created at the project root by the build command.
-PERSIST_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "chroma_db")
+# Define constants
+# Use the same absolute path as the create_db.py script
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+PERSIST_DIRECTORY = os.path.join(PROJECT_ROOT, "chroma_db")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Check if the API key is available
@@ -73,4 +73,3 @@ def get_rag_response(query: str):
     """
     response = rag_chain.invoke({"query": query})
     return response
-
