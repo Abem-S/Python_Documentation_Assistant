@@ -1,9 +1,9 @@
 langchain
 langchain-community
-langchain-huggingface
 langchain-chroma
 langchain-groq
 python-dotenv
 fastapi
 uvicorn[standard]
-sentence-transformers
+langchain-google-genai
+
