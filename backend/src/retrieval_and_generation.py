@@ -2,17 +2,17 @@
 
 import os
 from dotenv import load_dotenv
-from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
+# The key change: import Google's embedding model
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 # Load environment variables from the .env file in the backend directory
 load_dotenv()
 
 # Define constants
 PERSIST_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
-EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Check if the API key is available
@@ -20,7 +20,10 @@ if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable not set.")
 
 # Initialize the embedding model
-embedding_model = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL_NAME)
+# This is the key change to use the Google API for embeddings
+embedding_model = GoogleGenerativeAIEmbeddings(
+    model="models/embedding-001"
+)
 
 # Initialize the Chroma vector store
 vector_store = Chroma(
