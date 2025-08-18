@@ -16,6 +16,7 @@ Python_Documentation_Assistant/
 │   └── retrieval_and_generation.py  # Retrieval-augmented generation
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # Project documentation
+```
 
 ## File Overview
 
