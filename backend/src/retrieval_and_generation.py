@@ -1,18 +1,18 @@
-# backend/src/retrieval_and_generation.py
 
 import os
 from dotenv import load_dotenv
 from langchain_chroma import Chroma
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
-# The key change: import Google's embedding model
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
-# Load environment variables from the .env file in the backend directory
+# Load environment variables
 load_dotenv()
 
-# Define constants
-PERSIST_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(__file__)), "chroma_db")
+# Define the constants
+# This is the key fix: use a direct, project-relative path.
+# The `chroma_db` folder is created at the project root by the build command.
+PERSIST_DIRECTORY = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "chroma_db")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # Check if the API key is available
@@ -20,16 +20,32 @@ if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable not set.")
 
 # Initialize the embedding model
-# This is the key change to use the Google API for embeddings
-embedding_model = GoogleGenerativeAIEmbeddings(
-    model="models/embedding-001"
-)
+try:
+    embedding_model = GoogleGenerativeAIEmbeddings(
+        model="models/embedding-001"
+    )
+    print("Embedding model initialized for retrieval.")
+except Exception as e:
+    print(f"ERROR: Failed to initialize embedding model for retrieval: {e}")
+    # Re-raise the exception to stop the application from running in a broken state
+    raise
 
 # Initialize the Chroma vector store
-vector_store = Chroma(
-    persist_directory=PERSIST_DIRECTORY,
-    embedding_function=embedding_model
-)
+try:
+    print(f"Attempting to load Chroma vector store from: {PERSIST_DIRECTORY}")
+    if not os.path.exists(PERSIST_DIRECTORY):
+        print("ERROR: ChromaDB directory not found. Please check your Render build logs.")
+        raise FileNotFoundError("ChromaDB directory not found.")
+
+    vector_store = Chroma(
+        persist_directory=PERSIST_DIRECTORY,
+        embedding_function=embedding_model
+    )
+    print("Chroma vector store loaded successfully.")
+except Exception as e:
+    print(f"ERROR: Failed to load Chroma vector store: {e}")
+    # Re-raise the exception to stop the application from running in a broken state
+    raise
 
 # Initialize the Groq LLM
 groq_llm = ChatGroq(
@@ -37,7 +53,7 @@ groq_llm = ChatGroq(
     model_name="llama3-8b-8192"
 )
 
-# Initialize the RAG chain. This is done once when the script loads.
+# Initialize the RAG chain
 rag_chain = RetrievalQA.from_chain_type(
     llm=groq_llm,
     chain_type="stuff",
@@ -55,7 +71,6 @@ def get_rag_response(query: str):
     Returns:
         A dictionary containing the RAG chain's result and source documents.
     """
-    # This is the fix: wrap the query in a dictionary
     response = rag_chain.invoke({"query": query})
     return response
 
