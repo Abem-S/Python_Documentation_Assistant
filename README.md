@@ -2,6 +2,9 @@
 
 This project provides a modular pipeline for document processing, database creation, and retrieval-augmented generation using LangChain.
 
+## Live Demo
+Visit the live site: [python3-documentation-assistant.streamlit.app](https://python3-documentation-assistant.streamlit.app/)
+
 ## Folder Structure
 
 ```text
@@ -16,6 +19,7 @@ Python_Documentation_Assistant/
 │   └── retrieval_and_generation.py  # Retrieval-augmented generation
 ├── requirements.txt                 # Python dependencies
 └── README.md                        # Project documentation
+```
 
 ## File Overview
 
