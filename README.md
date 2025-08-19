@@ -2,6 +2,9 @@
 
 This project provides a modular pipeline for document processing, database creation, and retrieval-augmented generation using LangChain.
 
+## Live Demo
+Visit the live site: [python3-documentation-assistant.streamlit.app](https://python3-documentation-assistant.streamlit.app/)
+
 ## Folder Structure
 
 ```text
